@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Generals.io Stats</title>
+</head>
+<body>
+    <h1>mashiro's Stats</h1>
+    <p>Wins: <span id="wins"></span></p>
+    <p>Loses: <span id="loses"></span></p>
+
+    <script>
+        fetch('/stats')
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('wins').innerText = data.wins;
+                document.getElementById('loses').innerText = data.loses;
+            });
+    </script>
+</body>
+</html>
