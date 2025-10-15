@@ -5,17 +5,31 @@
     <title>Generals.io Stats</title>
 </head>
 <body>
-    <h1>mashiro's Stats</h1>
-    <p>Wins: <span id="wins"></span></p>
-    <p>Loses: <span id="loses"></span></p>
+    {% extends "base.html" %}
 
-    <script>
-        fetch('/stats')
-            .then(response => response.json())
-            .then(data => {
-                document.getElementById('wins').innerText = data.wins;
-                document.getElementById('loses').innerText = data.loses;
-            });
-    </script>
+    {% block content %}
+        <h1>Generals.io Stats</h1>
+        {% if current_user.is_authenticated %}
+            <p>Hi, {{ current_user.username }}!</p>
+            <div id="stats">
+                <p>Wins: <span id="wins"></span></p>
+                <p>Loses: <span id="loses"></span></p>
+            </div>
+            <script>
+                fetch('/stats')
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.error) {
+                            document.getElementById('stats').innerHTML = `<p>Error: ${data.error}</p>`;
+                        } else {
+                            document.getElementById('wins').textContent = data.wins;
+                            document.getElementById('loses').textContent = data.loses;
+                        }
+                    });
+            </script>
+        {% else %}
+            <p>Please <a href="{{ url_for('login') }}">log in</a> to see your stats.</p>
+        {% endif %}
+    {% endblock %}
 </body>
 </html>

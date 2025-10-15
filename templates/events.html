@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>Events</h1>
+    <ul>
+        {% for match in matches %}
+            <li>
+                Match at {{ match.start_time }}
+                <p>Participants: {{ match.participants.count() }}</p>
+                <ul>
+                    {% for user in match.participants %}
+                        <li>{{ user.username }}</li>
+                    {% endfor %}
+                </ul>
+                {% if current_user.is_authenticated %}
+                    {% if current_user not in match.participants %}
+                        <form action="{{ url_for('signup', match_id=match.id) }}" method="post" style="display:inline;">
+                            <input type="submit" value="Sign Up">
+                        </form>
+                    {% else %}
+                        <span>You are signed up</span>
+                    {% endif %}
+                {% endif %}
+            </li>
+        {% else %}
+            <li>No matches scheduled.</li>
+        {% endfor %}
+    </ul>
+{% endblock %}
