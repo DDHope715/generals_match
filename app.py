@@ -168,14 +168,23 @@ def force_init_db():
     db.drop_all()
     db.create_all()
 
-    # 创建一个默认的管理员用户
+    # 创建管理员用户 mashiro
     if not User.query.filter_by(username='mashiro').first():
         print("创建管理员用户 'mashiro'...")
         admin_user = User(username='mashiro', is_admin=True)
         admin_user.set_password('mashiro')
         db.session.add(admin_user)
-        db.session.commit()
         print("管理员用户 'mashiro' 创建成功。")
+
+    # 创建管理员用户 DDHope
+    if not User.query.filter_by(username='DDHope').first():
+        print("创建管理员用户 'DDHope'...")
+        admin_user2 = User(username='DDHope', is_admin=True)
+        admin_user2.set_password('DDHope')
+        db.session.add(admin_user2)
+        print("管理员用户 'DDHope' 创建成功。")
+
+    db.session.commit()
     print("数据库初始化完成。")
 
 
